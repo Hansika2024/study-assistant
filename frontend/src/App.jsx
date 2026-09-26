@@ -72,7 +72,10 @@ function App() {
 
       {state === "success" && (
         <>
-          <ResultView data={data} />
+          <ResultView
+            data={data}
+            onRestart={reset}
+          />
 
           <button type="button" onClick={reset}>
             Start Over

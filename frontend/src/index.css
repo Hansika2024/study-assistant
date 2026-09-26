@@ -43,3 +43,25 @@ pre {
   padding: 16px;
   border-radius: 8px;
 }
+
+.correct {
+  border: 2px solid green;
+}
+
+.incorrect {
+  border: 2px solid red;
+}
+
+section {
+  margin-top: 24px;
+}
+
+section button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+}
+
+textarea {
+  resize: vertical;
+}

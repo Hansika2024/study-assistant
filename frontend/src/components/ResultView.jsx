@@ -1,19 +1,31 @@
-export default function ResultView({ data }) {
+import Quiz from "./quiz/Quiz";
+import FlashcardDeck from "./flashcards/FlashcardDeck";
+
+export default function ResultView({
+  data,
+  onRestart,
+}) {
   if (!data) {
     return null;
   }
 
-  return (
-    <section>
-      <h2>{data.title}</h2>
+  if (data.type === "quiz") {
+    return (
+      <Quiz
+        quiz={data}
+        onRestart={onRestart}
+      />
+    );
+  }
 
-      <p>
-        Generated type: <strong>{data.type}</strong>
-      </p>
+  if (data.type === "flashcards") {
+    return (
+      <FlashcardDeck
+        flashcards={data}
+        onRestart={onRestart}
+      />
+    );
+  }
 
-      <pre>
-        {JSON.stringify(data, null, 2)}
-      </pre>
-    </section>
-  );
+  return null;
 }
