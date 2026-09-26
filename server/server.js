@@ -1,11 +1,20 @@
-require("dotenv").config({ path: "../.env" });
+require("dotenv").config({
+  path: "../.env",
+});
 
 const express = require("express");
+const cors = require("cors");
 const generateRoute = require("./routes/generate");
 
 const app = express();
 
 const PORT = 5000;
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
 app.use(express.json());
 
