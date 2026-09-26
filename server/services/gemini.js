@@ -93,17 +93,27 @@ Expected structure for flashcards:
 
   let parsedResponse;
 
-  try {
-    parsedResponse = JSON.parse(response.text);
-  } catch (error) {
-    console.error("Gemini returned invalid JSON:", response.text);
+try {
+  const cleanedText = response.text
+    .trim()
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
 
-    const parseError = new Error("Gemini returned invalid JSON.");
-    parseError.code = "INVALID_AI_RESPONSE";
-    throw parseError;
-  }
+  parsedResponse = JSON.parse(cleanedText);
+} catch (error) {
+  console.error("Gemini returned invalid JSON:", response.text);
 
-  return parsedResponse;
+  const parseError = new Error(
+    "Gemini returned invalid JSON."
+  );
+
+  parseError.code = "INVALID_AI_RESPONSE";
+  throw parseError;
+}
+
+return parsedResponse;
 }
 
 module.exports = {
