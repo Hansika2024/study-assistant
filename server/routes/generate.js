@@ -138,6 +138,21 @@ router.post("/generate", async (req, res) => {
     }
 
     // -----------------------------
+    // Request timeout
+    // -----------------------------
+
+    if (error.code === "AI_TIMEOUT") {
+      return res.status(408).json({
+        success: false,
+        error: {
+          code: "AI_TIMEOUT",
+          message:
+            "The AI took too long to respond. Please try again.",
+        },
+      });
+    }
+
+    // -----------------------------
     // Gemini rate limit
     // -----------------------------
 
