@@ -245,3 +245,14 @@ Both frontend and backend are deployed, since the Gemini API key must stay serve
 The frontend calls the backend via `VITE_API_BASE_URL`, and the backend restricts CORS to the deployed frontend origin via `CLIENT_ORIGIN`. `GEMINI_API_KEY` is set only on the backend and is never exposed to the client.
 
 > Note: the backend runs on Render's free tier, which spins down after periods of inactivity. The first request after idle time may take 20–30 seconds while the instance wakes up.
+
+- [AI tool usage](#ai-tool-usage)
+## AI tool usage
+
+AI tools were used throughout this project, primarily for planning and problem-solving rather than generating the application unreviewed.
+
+- **Architecture & rubric alignment (Chatgpt):** used to design the end-to-end pipeline (React → Express → Gemini → Zod validation → logical validation → UI), map each decision against the evaluation rubric, and settle on the state model (`idle` / `loading` / `success` / `error`), the discriminated-union data model for quiz vs. flashcards, and the stale-response/AbortController protection.
+- **Debugging & code review (Claude):** used to review `server.js` before deployment, which caught a hardcoded port, a hardcoded CORS origin that would break in production, and a debug log that printed part of the API key. Also used to diagnose live deployment issues (a transient Gemini `AI_REQUEST_FAILED` after a cold start, and an `AI_RATE_LIMITED` response from hitting the free-tier Gemini quota during testing) by tracing them to the exact error-handling branch in the code.
+- **Deployment (Claude):** used for step-by-step guidance deploying the frontend to Vercel and the backend to Render, including correctly separating the frontend-only `VITE_API_BASE_URL` variable from the backend-only `GEMINI_API_KEY`, so the API key is never exposed to the browser.
+
+All AI-suggested code was read, tested, and understood before being committed — nothing was merged without knowing what it does and why. The core engineering decisions (schema design, validation strategy, error taxonomy, state model) were made deliberately and can be explained and modified live, which is reflected in the [architecture](#architecture) and [validation pipeline](#validation-pipeline) sections above.
