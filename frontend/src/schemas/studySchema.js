@@ -1,4 +1,9 @@
-import { z } from "zod";
+const { z } = require("zod");
+
+const GenerateRequestSchema = z.object({
+  input: z.string().trim().min(3).max(10000),
+  mode: z.enum(["quiz", "flashcards"]),
+});
 
 const QuizQuestionSchema = z.object({
   question: z.string().trim().min(1),
@@ -24,7 +29,16 @@ const FlashcardsSchema = z.object({
   cards: z.array(FlashcardSchema).min(5).max(10),
 });
 
-export const StudyResultSchema = z.discriminatedUnion("type", [
+const StudyResultSchema = z.discriminatedUnion("type", [
   QuizSchema,
   FlashcardsSchema,
 ]);
+
+module.exports = {
+  GenerateRequestSchema,
+  QuizQuestionSchema,
+  QuizSchema,
+  FlashcardSchema,
+  FlashcardsSchema,
+  StudyResultSchema,
+};

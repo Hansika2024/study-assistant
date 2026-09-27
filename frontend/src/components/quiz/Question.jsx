@@ -2,62 +2,55 @@ export default function Question({
   question,
   selectedAnswer,
   isAnswered,
-  onSelect,
-  onSubmit,
+  onAnswerSelect,
 }) {
   return (
-    <section>
-      <h3>{question.question}</h3>
+    <div>
+      <h3 className="question-text">
+        {question.question}
+      </h3>
 
-      <div>
+      <div
+        className="options"
+        role="radiogroup"
+        aria-label="Answer options"
+      >
         {question.options.map((option, index) => {
-          const isSelected = selectedAnswer === index;
+          const isSelected =
+            selectedAnswer === index;
 
-          let className = "";
+          const isCorrect =
+            index === question.correct_answer;
 
-          if (isAnswered) {
-            if (index === question.correct_answer) {
-              className = "correct";
-            } else if (isSelected) {
-              className = "incorrect";
-            }
+          let optionClass = "option-button";
+
+          if (isAnswered && isCorrect) {
+            optionClass += " correct";
+          } else if (
+            isAnswered &&
+            isSelected &&
+            !isCorrect
+          ) {
+            optionClass += " incorrect";
+          } else if (isSelected) {
+            optionClass += " selected";
           }
 
           return (
             <button
               key={index}
               type="button"
-              className={className}
+              className={optionClass}
+              onClick={() => onAnswerSelect(index)}
               disabled={isAnswered}
-              onClick={() => onSelect(index)}
+              role="radio"
+              aria-checked={isSelected}
             >
               {option}
             </button>
           );
         })}
       </div>
-
-      {!isAnswered && (
-        <button
-          type="button"
-          disabled={selectedAnswer === null}
-          onClick={onSubmit}
-        >
-          Submit Answer
-        </button>
-      )}
-
-      {isAnswered && (
-        <div>
-          <p>
-            {selectedAnswer === question.correct_answer
-              ? "Correct!"
-              : "Incorrect"}
-          </p>
-
-          <p>{question.explanation}</p>
-        </div>
-      )}
-    </section>
+    </div>
   );
 }

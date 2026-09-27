@@ -1,23 +1,29 @@
-export default function ModeSelector({
-  mode,
-  onChange,
-  disabled,
-}) {
+export default function ModeSelector({ mode, onChange }) {
   return (
-    <div>
-      <label htmlFor="mode-select">
-        Study mode
-      </label>
+    <div className="mode-section">
+      <span className="field-label">Choose a study mode</span>
 
-      <select
-        id="mode-select"
-        value={mode}
-        onChange={(event) => onChange(event.target.value)}
-        disabled={disabled}
-      >
-        <option value="quiz">Quiz</option>
-        <option value="flashcards">Flashcards</option>
-      </select>
+      <div className="mode-options">
+        <button
+          type="button"
+          className={`mode-button ${
+            mode === "quiz" ? "active" : ""
+          }`}
+          onClick={() => onChange("quiz")}
+        >
+          Quiz
+        </button>
+
+        <button
+          type="button"
+          className={`mode-button ${
+            mode === "flashcards" ? "active" : ""
+          }`}
+          onClick={() => onChange("flashcards")}
+        >
+          Flashcards
+        </button>
+      </div>
     </div>
   );
 }

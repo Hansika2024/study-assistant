@@ -1,14 +1,7 @@
 import Quiz from "./quiz/Quiz";
 import FlashcardDeck from "./flashcards/FlashcardDeck";
 
-export default function ResultView({
-  data,
-  onRestart,
-}) {
-  if (!data) {
-    return null;
-  }
-
+export default function ResultView({ data, onRestart }) {
   if (data.type === "quiz") {
     return (
       <Quiz

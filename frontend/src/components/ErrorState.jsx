@@ -1,13 +1,18 @@
 export default function ErrorState({ message, onRetry }) {
   return (
-    <div>
-      <p>{message}</p>
+    <div className="state-card">
+      <div className="error-message" role="alert">
+        <strong>Something went wrong.</strong>
+        <p>{message}</p>
 
-      {onRetry && (
-        <button type="button" onClick={onRetry}>
+        <button
+          type="button"
+          className="secondary-button"
+          onClick={onRetry}
+        >
           Try Again
         </button>
-      )}
+      </div>
     </div>
   );
 }

@@ -14,6 +14,9 @@ export default function FlashcardDeck({
 
   const currentCard = deck.cards[currentIndex];
 
+  const progress =
+    ((currentIndex + 1) / deck.cards.length) * 100;
+
   const handleFlip = () => {
     setIsFlipped((previous) => !previous);
   };
@@ -74,45 +77,82 @@ export default function FlashcardDeck({
 
   if (showResult) {
     return (
-      <section>
+      <section
+        className="result-card result-summary"
+        aria-live="polite"
+      >
         <h2>Flashcards Complete</h2>
 
-        <p>Known: {knownCards.length}</p>
-        <p>Missed: {missedCards.length}</p>
+        <p className="score">
+          {knownCards.length}/{deck.cards.length}
+        </p>
+
+        <p>
+          You knew {knownCards.length} of{" "}
+          {deck.cards.length} cards.
+        </p>
+
+        <p>
+          Missed: {missedCards.length}
+        </p>
 
         {missedCards.length > 0 && (
           <button
             type="button"
+            className="primary-button"
             onClick={handleReviewMissed}
           >
             Review Missed Cards
           </button>
         )}
 
-        <button
-          type="button"
-          onClick={handleRestart}
-        >
-          Start Again
-        </button>
+        <div className="quiz-actions">
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={handleRestart}
+          >
+            Start Again
+          </button>
 
-        <button
-          type="button"
-          onClick={onRestart}
-        >
-          Exit Flashcards
-        </button>
+          <button
+            type="button"
+            className="secondary-button"
+            onClick={onRestart}
+          >
+            Exit Flashcards
+          </button>
+        </div>
       </section>
     );
   }
 
   return (
-    <section>
-      <h2>{deck.title}</h2>
+    <section className="result-card">
+      <div className="quiz-header">
+        <h2>{deck.title}</h2>
 
-      <p>
-        Card {currentIndex + 1} of {deck.cards.length}
-      </p>
+        <span>
+          Card {currentIndex + 1} of{" "}
+          {deck.cards.length}
+        </span>
+      </div>
+
+      <div
+        className="flashcard-progress"
+        aria-label={`Card ${
+          currentIndex + 1
+        } of ${deck.cards.length}`}
+      >
+        <div className="quiz-progress">
+          <div
+            className="quiz-progress-bar"
+            style={{
+              width: `${progress}%`,
+            }}
+          />
+        </div>
+      </div>
 
       <Flashcard
         card={currentCard}
@@ -121,9 +161,13 @@ export default function FlashcardDeck({
       />
 
       {isFlipped && (
-        <div>
+        <div
+          className="flashcard-actions"
+          aria-live="polite"
+        >
           <button
             type="button"
+            className="know-button"
             onClick={() => handleRating(true)}
           >
             I Know This
@@ -131,6 +175,7 @@ export default function FlashcardDeck({
 
           <button
             type="button"
+            className="missed-button"
             onClick={() => handleRating(false)}
           >
             I Didn't Know
@@ -140,6 +185,7 @@ export default function FlashcardDeck({
 
       <button
         type="button"
+        className="secondary-button exit-button"
         onClick={onRestart}
       >
         Exit Flashcards

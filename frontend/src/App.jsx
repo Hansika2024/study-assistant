@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import Header from "./components/Header";
 import PromptInput from "./components/PromptInput";
 import ModeSelector from "./components/ModeSelector";
@@ -8,10 +7,9 @@ import ResultView from "./components/ResultView";
 import LoadingState from "./components/LoadingState";
 import ErrorState from "./components/ErrorState";
 import EmptyState from "./components/EmptyState";
-
 import { useStudyGenerator } from "./hooks/useStudyGenerator";
 
-function App() {
+export default function App() {
   const [input, setInput] = useState("");
   const [mode, setMode] = useState("quiz");
 
@@ -38,52 +36,46 @@ function App() {
     input.trim().length >= 3 && !isLoading;
 
   return (
-    <main>
-      <Header />
+    <div className="app">
+      <main className="container">
+        <Header />
 
-      <PromptInput
-        value={input}
-        onChange={setInput}
-        disabled={isLoading}
-      />
+        <section className="generator-card">
+          <PromptInput
+            value={input}
+            onChange={setInput}
+          />
 
-      <ModeSelector
-        mode={mode}
-        onChange={setMode}
-        disabled={isLoading}
-      />
+          <ModeSelector
+            mode={mode}
+            onChange={setMode}
+          />
 
-      <GenerateButton
-        onClick={handleGenerate}
-        disabled={!canGenerate}
-        loading={isLoading}
-      />
+          <GenerateButton
+            onClick={handleGenerate}
+            disabled={!canGenerate}
+            loading={isLoading}
+          />
+        </section>
 
-      {state === "idle" && <EmptyState />}
+        {state === "idle" && <EmptyState />}
 
-      {state === "loading" && <LoadingState />}
+        {state === "loading" && <LoadingState />}
 
-      {state === "error" && (
-        <ErrorState
-          message={error}
-          onRetry={handleGenerate}
-        />
-      )}
+        {state === "error" && (
+          <ErrorState
+            message={error}
+            onRetry={handleGenerate}
+          />
+        )}
 
-      {state === "success" && (
-        <>
+        {state === "success" && data && (
           <ResultView
             data={data}
             onRestart={reset}
           />
-
-          <button type="button" onClick={reset}>
-            Start Over
-          </button>
-        </>
-      )}
-    </main>
+        )}
+      </main>
+    </div>
   );
 }
-
-export default App;

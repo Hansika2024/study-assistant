@@ -1,24 +1,27 @@
-export default function PromptInput({
-  value,
-  onChange,
-  disabled,
-}) {
+export default function PromptInput({ value, onChange }) {
+  const maxLength = 10000;
+
   return (
     <div>
-      <label htmlFor="study-input">
+      <label className="field-label" htmlFor="study-input">
         What do you want to study?
       </label>
 
       <textarea
         id="study-input"
+        className="prompt-input"
         value={value}
+        maxLength={maxLength}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Example: Explain binary search and its time complexity"
-        rows={6}
-        disabled={disabled}
+        placeholder="Example: Explain binary search, including its time complexity and use cases."
       />
 
-      <p>{value.length}/10000</p>
+      <div className="input-footer">
+        <span>Enter a topic or learning goal.</span>
+        <span>
+          {value.length}/{maxLength}
+        </span>
+      </div>
     </div>
   );
 }

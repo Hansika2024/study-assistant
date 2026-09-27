@@ -2,6 +2,10 @@ require("dotenv").config({
   path: "../.env",
 });
 
+// TEMPORARY - remove after debugging
+const key = process.env.GEMINI_API_KEY || "";
+console.log("Loaded GEMINI_API_KEY ending in:", key.slice(-6));
+
 const express = require("express");
 const cors = require("cors");
 const generateRoute = require("./routes/generate");

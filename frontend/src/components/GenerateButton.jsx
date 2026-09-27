@@ -6,6 +6,7 @@ export default function GenerateButton({
   return (
     <button
       type="button"
+      className="generate-button"
       onClick={onClick}
       disabled={disabled}
     >
