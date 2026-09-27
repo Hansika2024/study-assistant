@@ -2,21 +2,33 @@ require("dotenv").config({
   path: "../.env",
 });
 
-// TEMPORARY - remove after debugging
-const key = process.env.GEMINI_API_KEY || "";
-console.log("Loaded GEMINI_API_KEY ending in:", key.slice(-6));
-
 const express = require("express");
 const cors = require("cors");
 const generateRoute = require("./routes/generate");
 
 const app = express();
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.CLIENT_ORIGIN,
+].filter(Boolean);
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
   })
 );
 
